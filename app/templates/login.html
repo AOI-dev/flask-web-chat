@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+    <form class="text-center border border-light p-5" action="/reg?" method="post">
+
+        <p class="h4 mb-4">Вход</p>
+        <div class="form-row mb-4">
+            <div class="col">
+                    <input name="username" type="text" id="defaultRegisterFormNick" class="form-control" placeholder="Nick">
+            </div>
+        <!-- Password -->
+        <input name="pass" type="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Password" aria-describedby="defaultRegisterFormPasswordHelpBlock">
+
+        <!-- Sign in button -->
+        <button class="btn btn-info my-4 btn-block" type="submit">Register</button>
+        </div>
+    </form>
+{% endblock %}

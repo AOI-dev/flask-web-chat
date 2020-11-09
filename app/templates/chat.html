@@ -1,12 +1,12 @@
-    {% extends "base.html" %}
+{% extends "base.html" %}
 
-    {% block title %}Регистрация{% endblock %}
+{% block title %}Чат{% endblock %}
 
-    {% block content %}<!-- Default form register -->
-    <form class="text-center border border-light p-5" action="/reg?" method="post">
+{% block content %}
 
-        <p class="h4 mb-4">Sign up</p>
-
+<form class="text-center border border-light p-5" action="/chat?" method="post">
+    All messages: {{ data_all }}
+        <p class="h4 mb-4">Send message</p>
         <div class="form-row mb-4">
             <div class="col">
                 <!-- First name -->
@@ -22,13 +22,9 @@
 {#            </div>#}
         </div>
         <!-- Password -->
-        <input name="pass" type="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Password" aria-describedby="defaultRegisterFormPasswordHelpBlock">
-
-
+        <input name="message" type="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Message" aria-describedby="defaultRegisterFormPasswordHelpBlock">
         <!-- Sign up button -->
         <button class="btn btn-info my-4 btn-block" type="submit">Register</button>
-
         <hr>
     </form>
-    <!-- Default form register -->
-    {% endblock %}
+{% endblock %}

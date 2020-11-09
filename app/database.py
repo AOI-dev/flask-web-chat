@@ -23,6 +23,19 @@ def test_create(cursor):
     cursor.execute('INSERT INTO Users VALUES (\'admin\', \'hard\')')
     cursor.execute('INSERT INTO Users VALUES (\'jayse\', \'1337\')')
 
+    cursor.execute("DROP TABLE IF EXISTS Messages;")
+    cursor.execute('CREATE TABLE Messages (username TEXT NOT NULL, messaage TEXT NOT NULL);')
+    cursor.execute('INSERT INTO Messages VALUES (\'user\', \'text\')')
+
+
+
+@db_connect
+def add_user(cursor, username, password):
+    cursor.execute(f'INSERT INTO Users VALUES (\'{username}\', \'{password}\')')
+
+@db_connect
+def add_message(cursor, username, message):
+    cursor.execute(f'INSERT INTO Messages VALUES (\'{username}\', \'{message}\')')
 
 @db_connect
 def test_select(username, cursor):
@@ -33,4 +46,10 @@ def test_select(username, cursor):
 @db_connect
 def test_select_all(cursor):
     cursor.execute("SELECT * FROM Users;")
+    return cursor.fetchall()
+
+
+@db_connect
+def select_all_messages(cursor):
+    cursor.execute("SELECT * FROM Messages;")
     return cursor.fetchall()
