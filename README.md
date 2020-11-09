@@ -1,1 +1,1 @@
-# Competition template
+# Я пыталсо
