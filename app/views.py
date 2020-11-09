@@ -22,4 +22,4 @@ def login():
 
 @app.route('/reg', methods=['GET', 'POST'])
 def reg():
-    return "<h2>this is reg<h2>"
+    return render_template('reg.html')
