@@ -1,5 +1,5 @@
 from . import app
-from .database import test_create, test_select, test_select_all, add_user, select_all_messages, add_message
+from .database import test_create, test_select, test_select_all, add_user, select_all_messages, add_message, user_exists
 
 from flask import render_template, request
 
@@ -26,10 +26,14 @@ def login():
 
 @app.route('/chat', methods=['GET', 'POST'])
 def chat():
+    if request.method == 'GET':
+        return render_template('chat_no_register.html')
+
     if request.method == 'POST':
+        request.form["username"]
         add_message(username="user123", message=request.form["message"])
-    data_all = select_all_messages()
-    return render_template('chat.html', data_all=data_all)
+        data_all = select_all_messages()
+        return render_template('chat.html', data_all=data_all)
 
 
 @app.route('/reg', methods=['GET', 'POST'])
@@ -37,8 +41,10 @@ def reg():
     if request.method == 'POST':
         username = request.form["username"]
         password = request.form["pass"]
-        add_user(username=username, password=password)
-        return "Получил" + username + " " + password
+        if user_exists(username=username, password=password):
+            add_user(username=username, password=password)
+            return "Получил" + username + " " + password
+        return "ЮЗЕР УЖЕ ЗАРЕГАН"
     else:
         return render_template('reg.html')
 

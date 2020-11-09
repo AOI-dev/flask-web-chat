@@ -28,17 +28,42 @@ def test_create(cursor):
     cursor.execute('INSERT INTO Messages VALUES (\'user\', \'text\')')
 
 
-
 @db_connect
 def add_user(cursor, username, password):
     cursor.execute(f'INSERT INTO Users VALUES (\'{username}\', \'{password}\')')
+
+
+@db_connect
+def user_exists(cursor, username, password):
+    cursor.execute(f'SELECT \'{username}\' FROM Users;')
+    if not cursor.fetchall():
+        return True
+    else:
+        return False
+
+
+@db_connect
+def user_entered_the_pass(cursor, username, password):
+    cursor.execute(f'SELECT \'{username}\' FROM Users;')
+    if password == cursor.fetchall()[1]:
+        return True
+    else:
+        return False
+
 
 @db_connect
 def add_message(cursor, username, message):
     cursor.execute(f'INSERT INTO Messages VALUES (\'{username}\', \'{message}\')')
 
+
 @db_connect
 def test_select(username, cursor):
+    cursor.execute("SELECT * FROM Users WHERE username = \"{}\";".format(username))
+    return cursor.fetchall()
+
+
+@db_connect
+def select(username, cursor):
     cursor.execute("SELECT * FROM Users WHERE username = \"{}\";".format(username))
     return cursor.fetchall()
 
