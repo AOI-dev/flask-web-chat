@@ -4,27 +4,31 @@
 
 {% block content %}
 
+ <legend>All messages:</legend>
+    <table border="1" align="center">
+    <tr><td>
+    {% for item in data_all %}
+       {{ item[0] }}: {{ item[1] }}<p>
+    {% endfor %}
+    </td></tr>
+    </table>
+
 <form class="text-center border border-light p-5" action="/chat?" method="post">
-    All messages: {{ data_all }}
         <p class="h4 mb-4">Send message</p>
-        <div class="form-row mb-4">
-            <div class="col">
-                <!-- First name -->
-                    <input name="username" type="text" id="defaultRegisterFormNick" class="form-control" placeholder="Nick">
+
+        <div class="container" >
+            <div class="row">
+                <div class="d-md-flex center-block" >
+                    <div class="md-form md-outline">
+                <textarea id="form76" class="md-textarea form-control" rows="4"></textarea>
+                <label for="form76">Сообщение</label>
+                </div>
+                </div>
             </div>
-{#            <div class="col">#}
-{#                <!-- First name -->#}
-{#                <input type="text" id="defaultRegisterFormFirstName" class="form-control" placeholder="First name">#}
-{#            </div>#}
-{#            <div class="col">#}
-{#                <!-- Last name -->#}
-{#                <input name= type="text" id="defaultRegisterFormLastName" class="form-control" placeholder="Last name">#}
-{#            </div>#}
         </div>
-        <!-- Password -->
-        <input name="message" type="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Message" aria-describedby="defaultRegisterFormPasswordHelpBlock">
-        <!-- Sign up button -->
-        <button class="btn btn-info my-4 btn-block" type="submit">Register</button>
+        <button class="btn btn-info my-4 btn-block" type="submit">Отправить сообщение</button>
         <hr>
+
     </form>
+
 {% endblock %}

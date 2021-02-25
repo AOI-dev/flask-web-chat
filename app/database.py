@@ -34,9 +34,11 @@ def add_user(cursor, username, password):
 
 
 @db_connect
-def user_exists(cursor, username, password):
-    cursor.execute(f'SELECT \'{username}\' FROM Users;')
-    if not cursor.fetchall():
+def user_exists(cursor, username):
+    print(cursor.execute(f'SELECT * FROM Users WHERE username = \"{username}\";'))
+    list = cursor.fetchall()
+    print(list)
+    if list:
         return True
     else:
         return False
@@ -45,7 +47,7 @@ def user_exists(cursor, username, password):
 @db_connect
 def user_entered_the_pass(cursor, username, password):
     cursor.execute(f'SELECT \'{username}\' FROM Users;')
-    if password == cursor.fetchall()[1]:
+    if password == cursor.fetchall()[0][1]:
         return True
     else:
         return False

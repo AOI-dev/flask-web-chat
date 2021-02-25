@@ -1,7 +1,10 @@
 from . import app
-from .database import test_create, test_select, test_select_all, add_user, select_all_messages, add_message, user_exists
+from .database import test_create, test_select, test_select_all, add_user, select_all_messages, add_message, \
+    user_exists, user_entered_the_pass
 
-from flask import render_template, request
+from flask import render_template, request, make_response, session, redirect, escape, url_for
+
+app.secret_key = '12354'
 
 
 @app.route('/')
@@ -17,23 +20,33 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # if request.method == 'POST':
-    #
-    # else:
-    #     # show_the_login_form()
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['pass']
+        print(username, password)
+        session["username"] = username
+        # if user_exists(username=username) and user_entered_the_pass(username=username, password=password):
+        #     session['username'] = request.form['username']
     return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    # удалить из сессии имя пользователя, если оно там есть
+    session.pop('username', None)
+    return 'Вышел'
 
 
 @app.route('/chat', methods=['GET', 'POST'])
 def chat():
-    if request.method == 'GET':
-        return render_template('chat_no_register.html')
-
+    data_all = select_all_messages()
     if request.method == 'POST':
-        request.form["username"]
-        add_message(username="user123", message=request.form["message"])
-        data_all = select_all_messages()
-        return render_template('chat.html', data_all=data_all)
+        if not session['username']:
+            return redirect(url_for('login'))
+        else:
+            add_message(username=session['username'], message=request.form['message'])
+            # return 'Logged in as %s' % escape(session['username']) + render_template('chat.html', data_all=data_all)
+    return render_template('chat.html', data_all=data_all)
 
 
 @app.route('/reg', methods=['GET', 'POST'])
@@ -41,10 +54,16 @@ def reg():
     if request.method == 'POST':
         username = request.form["username"]
         password = request.form["pass"]
-        if user_exists(username=username, password=password):
+        print(user_exists(username=username))
+        if not user_exists(username=username):
             add_user(username=username, password=password)
             return "Получил" + username + " " + password
-        return "ЮЗЕР УЖЕ ЗАРЕГАН"
+        else:
+            return "ЮЗЕР УЖЕ ЗАРЕГАН"
     else:
         return render_template('reg.html')
 
+
+@app.route('/session')
+def sess():
+    return f"<F1>{session['username']}</F1>"
