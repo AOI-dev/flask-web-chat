@@ -6,29 +6,44 @@
 
  <legend>All messages:</legend>
     <table border="1" align="center">
+        <div id="messages-box"></div>
     <tr><td>
-    {% for item in data_all %}
-       {{ item[0] }}: {{ item[1] }}<p>
-    {% endfor %}
+
+        <script>
+            var ifrm = document.createElement('iframe');
+            ifrm.setAttribute('id', 'ifrm'); // assign an id
+            var el = document.getElementById('messages-box');
+            el.parentNode.insertBefore(ifrm, el);
+            ifrm.setAttribute('src', '/get_messages');
+            var intervalId = setInterval(function() {
+                document.getElementById('ifrm').remove();
+                var ifrm = document.createElement('iframe');
+                ifrm.setAttribute('id', 'ifrm'); // assign an id
+                var el = document.getElementById('messages-box');
+                el.parentNode.insertBefore(ifrm, el);
+                ifrm.setAttribute('src', '/get_messages');
+            }, 5000);
+
+        </script>
+
+{#    {% for item in data_all %}#}
+{#       {{ item[0] }}: {{ item[1] }}<p>#}
+{#    {% endfor %}#}
     </td></tr>
     </table>
 
-<form class="text-center border border-light p-5" action="/chat?" method="post">
+    <form class="text-center border border-light p-5" action="/chat" method="post">
         <p class="h4 mb-4">Send message</p>
-
-        <div class="container" >
+        <div class="container center-block">
             <div class="row">
-                <div class="d-md-flex center-block" >
-                    <div class="md-form md-outline">
-                <textarea id="form76" class="md-textarea form-control" rows="4"></textarea>
-                <label for="form76">Сообщение</label>
-                </div>
+                <div class="md-form md-outline col-sm-12">
+                    <textarea type="message" name="message" id="form76" class="md-textarea form-control" rows="4"></textarea>
+                    <label for="form76">Сообщение</label>
                 </div>
             </div>
+            <button class="btn btn-info my-4 btn-block" type="submit">Отправить сообщение</button>
+            <hr>
         </div>
-        <button class="btn btn-info my-4 btn-block" type="submit">Отправить сообщение</button>
-        <hr>
-
     </form>
 
 {% endblock %}

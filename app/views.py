@@ -34,7 +34,7 @@ def login():
 def logout():
     # удалить из сессии имя пользователя, если оно там есть
     session.pop('username', None)
-    return 'Вышел'
+    return f"<H1>Вышел</H1>"
 
 
 @app.route('/chat', methods=['GET', 'POST'])
@@ -45,8 +45,21 @@ def chat():
             return redirect(url_for('login'))
         else:
             add_message(username=session['username'], message=request.form['message'])
+            return redirect(url_for('chat'))
             # return 'Logged in as %s' % escape(session['username']) + render_template('chat.html', data_all=data_all)
     return render_template('chat.html', data_all=data_all)
+
+
+@app.route('/get_messages')
+def get_messages():
+    data_all = select_all_messages()
+    if not session['username']:
+        return redirect(url_for('login'))
+    else:
+        result = ""
+        for i in range(len(data_all)):
+            result += data_all[i][0] + " " + data_all[i][1]+"<br>"
+        return result
 
 
 @app.route('/reg', methods=['GET', 'POST'])
@@ -66,4 +79,8 @@ def reg():
 
 @app.route('/session')
 def sess():
-    return f"<F1>{session['username']}</F1>"
+    try:
+        if session['username']:
+            return f"<F1>{session['username']}</F1>"
+    except Exception:
+        return redirect(url_for('login'));
